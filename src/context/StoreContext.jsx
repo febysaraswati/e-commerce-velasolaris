@@ -22,16 +22,11 @@ const syncProductsWithInitial = (savedProducts, initialProducts) => {
     const initialItem = initialMap.get(savedItem.id);
     if (!initialItem) return savedItem;
 
-    const stockDiff =
-      typeof initialItem.stock === "number" && typeof savedItem.stock === "number"
-        ? Math.min(savedItem.stock, initialItem.stock)
-        : savedItem.stock;
-
     return {
-      ...savedItem,
       ...initialItem,
+      ...savedItem,
       price: initialItem.price,
-      stock: stockDiff,
+      stock: typeof savedItem.stock === "number" ? savedItem.stock : initialItem.stock,
     };
   });
 
