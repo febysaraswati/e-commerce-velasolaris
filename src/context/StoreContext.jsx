@@ -13,42 +13,19 @@ const loadStorage = (key, fallback) => {
 };
 
 export function StoreProvider({ children }) {
-  const [products, setProducts] = useState(() =>
-    loadStorage("vs_products", INITIAL_PRODUCTS)
-  );
+  const [products, setProducts] = useState(() => loadStorage("vs_products", INITIAL_PRODUCTS));
   const [cart, setCart] = useState(() => loadStorage("vs_cart", []));
-  const [reviews, setReviews] = useState(() =>
-    loadStorage("vs_reviews", INITIAL_REVIEWS)
-  );
+  const [reviews, setReviews] = useState(() => loadStorage("vs_reviews", INITIAL_REVIEWS));
   const [orders, setOrders] = useState(() => loadStorage("vs_orders", []));
-  const [consultations, setConsultations] = useState(() =>
-    loadStorage("vs_consultations", [])
-  );
-  const [feedbacks, setFeedbacks] = useState(() =>
-    loadStorage("vs_feedbacks", [])
-  );
+  const [consultations, setConsultations] = useState(() => loadStorage("vs_consultations", []));
+  const [feedbacks, setFeedbacks] = useState(() => loadStorage("vs_feedbacks", []));
 
-  useEffect(
-    () => localStorage.setItem("vs_products", JSON.stringify(products)),
-    [products]
-  );
+  useEffect(() => localStorage.setItem("vs_products", JSON.stringify(products)), [products]);
   useEffect(() => localStorage.setItem("vs_cart", JSON.stringify(cart)), [cart]);
-  useEffect(
-    () => localStorage.setItem("vs_reviews", JSON.stringify(reviews)),
-    [reviews]
-  );
-  useEffect(
-    () => localStorage.setItem("vs_orders", JSON.stringify(orders)),
-    [orders]
-  );
-  useEffect(
-    () => localStorage.setItem("vs_consultations", JSON.stringify(consultations)),
-    [consultations]
-  );
-  useEffect(
-    () => localStorage.setItem("vs_feedbacks", JSON.stringify(feedbacks)),
-    [feedbacks]
-  );
+  useEffect(() => localStorage.setItem("vs_reviews", JSON.stringify(reviews)), [reviews]);
+  useEffect(() => localStorage.setItem("vs_orders", JSON.stringify(orders)), [orders]);
+  useEffect(() => localStorage.setItem("vs_consultations", JSON.stringify(consultations)), [consultations]);
+  useEffect(() => localStorage.setItem("vs_feedbacks", JSON.stringify(feedbacks)), [feedbacks]);
 
   const addToCart = (product, qty = 1) => {
     setCart((prev) => {
@@ -79,10 +56,7 @@ export function StoreProvider({ children }) {
   };
 
   const createOrder = ({ customerName, phone, address, notes }) => {
-    const totalPrice = cart.reduce(
-      (sum, item) => sum + item.product.price * item.qty,
-      0
-    );
+    const totalPrice = cart.reduce((sum, item) => sum + item.product.price * item.qty, 0);
     const newOrder = {
       id: "VS-" + Date.now().toString().slice(-6),
       customer_name: customerName,
@@ -104,9 +78,7 @@ export function StoreProvider({ children }) {
     setProducts((prev) =>
       prev.map((p) => {
         const ordered = cart.find((item) => item.product.id === p.id);
-        return ordered
-          ? { ...p, stock: Math.max(0, p.stock - ordered.qty) }
-          : p;
+        return ordered ? { ...p, stock: Math.max(0, p.stock - ordered.qty) } : p;
       })
     );
     setCart([]);
@@ -123,9 +95,7 @@ export function StoreProvider({ children }) {
 
   const updateProduct = (productId, payload) => {
     setProducts((prev) =>
-      prev.map((p) =>
-        p.id === Number(productId) ? { ...p, ...payload } : p
-      )
+      prev.map((p) => (p.id === Number(productId) ? { ...p, ...payload } : p))
     );
   };
 
@@ -177,11 +147,7 @@ export function StoreProvider({ children }) {
 
   const addFeedback = (payload) => {
     setFeedbacks((prev) => [
-      {
-        id: Date.now(),
-        ...payload,
-        created_at: new Date().toLocaleDateString("id-ID"),
-      },
+      { id: Date.now(), ...payload, created_at: new Date().toLocaleDateString("id-ID") },
       ...prev,
     ]);
   };

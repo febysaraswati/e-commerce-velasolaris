@@ -14,8 +14,7 @@ export const INITIAL_PRODUCTS = [
     price: 38500000,
     stock: 8,
     badge: "Hemat & Mandiri",
-    summary:
-      "Cocok untuk rumah tangga kecil, pondok, atau area tanpa jaringan PLN stabil.",
+    summary: "Cocok untuk rumah tangga kecil, pondok, atau area tanpa jaringan PLN stabil.",
     specs: {
       inverter: "3 kW Pure Sine Wave Off-Grid",
       battery: "LiFePO4 48V 100Ah (4.8 kWh)",
@@ -33,8 +32,7 @@ export const INITIAL_PRODUCTS = [
     price: 54000000,
     stock: 6,
     badge: "Terlaris Rumah Tangga",
-    summary:
-      "Menyeimbangkan daya surya, baterai cadangan, dan grid PLN secara otomatis.",
+    summary: "Menyeimbangkan daya surya, baterai cadangan, dan grid PLN secara otomatis.",
     specs: {
       inverter: "5 kW Smart Hybrid Inverter",
       battery: "LiFePO4 48V 100Ah (4.8 kWh)",
@@ -52,8 +50,7 @@ export const INITIAL_PRODUCTS = [
     price: 72500000,
     stock: 5,
     badge: "Kapasitas Menengah",
-    summary:
-      "Ideal untuk hunian dua lantai dengan AC, kulkas, pompa air, dan kerja WFH.",
+    summary: "Ideal untuk hunian dua lantai dengan AC, kulkas, pompa air, dan kerja WFH.",
     specs: {
       inverter: "6 kW Hybrid Inverter",
       battery: "LiFePO4 51.2V 200Ah (10.2 kWh)",
@@ -71,8 +68,7 @@ export const INITIAL_PRODUCTS = [
     price: 89000000,
     stock: 4,
     badge: "Villa & Studio",
-    summary:
-      "Dirancang untuk villa, homestay, atau rumah besar dengan beban puncak tinggi.",
+    summary: "Dirancang untuk villa, homestay, atau rumah besar dengan beban puncak tinggi.",
     specs: {
       inverter: "8 kW Smart Hybrid Inverter",
       battery: "LiFePO4 51.2V 280Ah (14.3 kWh)",
@@ -90,8 +86,7 @@ export const INITIAL_PRODUCTS = [
     price: 108000000,
     stock: 3,
     badge: "Performa Maksimal",
-    summary:
-      "Solusi daya besar untuk kebutuhan operasional intensif, resort, atau off-grid penuh.",
+    summary: "Solusi daya besar untuk kebutuhan operasional intensif, resort, atau off-grid penuh.",
     specs: {
       inverter: "10 kW Heavy-Duty Inverter",
       battery: "LiFePO4 51.2V 300Ah (15.3 kWh)",
@@ -107,8 +102,7 @@ export const INITIAL_REVIEWS = [
     product_id: 2,
     author: "Made Arya",
     rating: 5,
-    comment:
-      "Tagihan bulanan turun drastis dan pemadaman sebentar nggak terasa.",
+    comment: "Tagihan bulanan turun drastis dan pemadaman sebentar nggak terasa.",
     created_at: "2026-10-18",
   },
   {
@@ -116,15 +110,7 @@ export const INITIAL_REVIEWS = [
     product_id: 4,
     author: "Putu Sintya",
     rating: 5,
-    comment:
-      "Instalasi rapi dan backup baterai cukup buat malam hari di villa.",
+    comment: "Instalasi rapi dan backup baterai cukup buat malam hari di villa.",
     created_at: "2026-11-02",
   },
 ];
-
-export const formatRupiah = (amount) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    maximumFractionDigits: 0,
-  }).format(amount);
