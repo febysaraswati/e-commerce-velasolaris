@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  Zap,
-  ShieldCheck,
   ArrowRight,
   Search,
   X,
@@ -11,12 +9,12 @@ import {
 } from "lucide-react";
 import { useStore } from "../../context/StoreContext";
 import { CATEGORIES } from "../../data/velasolarisData";
-import { formatRupiah } from "../../utils/formatters";
+import PackageCard from "../../components/PackageCard";
 
 const ITEMS_PER_PAGE = 3;
 
 export default function HomePage() {
-  const { products, addToCart } = useStore();
+  const { products, reviews, addToCart } = useStore();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,7 +36,6 @@ export default function HomePage() {
     return matchesCategory && matchesSearch;
   });
 
-  // Reset ke halaman 1 jika filter kategori atau kata kunci berubah
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedCategory, searchQuery]);
@@ -156,57 +153,12 @@ export default function HomePage() {
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {paginatedProducts.map((pkg) => (
-              <div
+              <PackageCard
                 key={pkg.id}
-                className="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-xs"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="rounded-md bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-800">
-                      {pkg.capacity_wp} Wp • {pkg.system_type}
-                    </span>
-                    <span className="text-xs text-slate-500">
-                      Stok: {pkg.stock}
-                    </span>
-                  </div>
-
-                  <h3 className="mt-3 text-lg font-bold text-slate-900">
-                    {pkg.name}
-                  </h3>
-                  <p className="mt-1.5 text-sm text-slate-600">{pkg.summary}</p>
-
-                  <ul className="mt-4 space-y-1.5 border-t border-slate-100 pt-3 text-xs text-slate-700">
-                    <li className="flex items-center gap-1.5">
-                      <Zap className="h-3.5 w-3.5 text-amber-500" />
-                      <span>{pkg.specs.panels}</span>
-                    </li>
-                    <li className="flex items-center gap-1.5">
-                      <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-                      <span>{pkg.specs.battery}</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="mt-5 border-t border-slate-100 pt-4">
-                  <p className="text-lg font-bold text-slate-900">
-                    {formatRupiah(pkg.price)}
-                  </p>
-                  <div className="mt-3 flex gap-2">
-                    <button
-                      onClick={() => addToCart(pkg, 1)}
-                      className="flex-1 rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800"
-                    >
-                      + Keranjang
-                    </button>
-                    <Link
-                      to={`/packages/${pkg.id}`}
-                      className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
-                    >
-                      Detail
-                    </Link>
-                  </div>
-                </div>
-              </div>
+                pkg={pkg}
+                reviews={reviews}
+                onAddToCart={addToCart}
+              />
             ))}
           </div>
 
