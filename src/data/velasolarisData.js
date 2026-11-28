@@ -114,10 +114,3 @@ export const INITIAL_REVIEWS = [
     created_at: "2026-11-02",
   },
 ];
-
-export const formatRupiah = (amount) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    maximumFractionDigits: 0,
-  }).format(amount);

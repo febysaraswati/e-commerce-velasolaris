@@ -13,13 +13,14 @@ const loadStorage = (key, fallback) => {
 };
 
 export function StoreProvider({ children }) {
-  const [products] = useState(INITIAL_PRODUCTS);
+  const [products, setProducts] = useState(() => loadStorage("vs_products", INITIAL_PRODUCTS));
   const [cart, setCart] = useState(() => loadStorage("vs_cart", []));
   const [reviews, setReviews] = useState(() => loadStorage("vs_reviews", INITIAL_REVIEWS));
   const [orders, setOrders] = useState(() => loadStorage("vs_orders", []));
   const [consultations, setConsultations] = useState(() => loadStorage("vs_consultations", []));
   const [feedbacks, setFeedbacks] = useState(() => loadStorage("vs_feedbacks", []));
 
+  useEffect(() => localStorage.setItem("vs_products", JSON.stringify(products)), [products]);
   useEffect(() => localStorage.setItem("vs_cart", JSON.stringify(cart)), [cart]);
   useEffect(() => localStorage.setItem("vs_reviews", JSON.stringify(reviews)), [reviews]);
   useEffect(() => localStorage.setItem("vs_orders", JSON.stringify(orders)), [orders]);
@@ -74,8 +75,38 @@ export function StoreProvider({ children }) {
       created_at: new Date().toLocaleDateString("id-ID"),
     };
     setOrders((prev) => [newOrder, ...prev]);
+    setProducts((prev) =>
+      prev.map((p) => {
+        const ordered = cart.find((item) => item.product.id === p.id);
+        return ordered ? { ...p, stock: Math.max(0, p.stock - ordered.qty) } : p;
+      })
+    );
     setCart([]);
     return newOrder;
+  };
+
+  const addProduct = (payload) => {
+    const newProduct = {
+      ...payload,
+      id: Date.now(),
+    };
+    setProducts((prev) => [...prev, newProduct]);
+  };
+
+  const updateProduct = (productId, payload) => {
+    setProducts((prev) =>
+      prev.map((p) => (p.id === Number(productId) ? { ...p, ...payload } : p))
+    );
+  };
+
+  const deleteProduct = (productId) => {
+    setProducts((prev) => prev.filter((p) => p.id !== Number(productId)));
+  };
+
+  const updateOrderStatus = (orderId, status) => {
+    setOrders((prev) =>
+      prev.map((order) => (order.id === orderId ? { ...order, status } : order))
+    );
   };
 
   const addReview = ({ productId, author, rating, comment }) => {
@@ -92,11 +123,26 @@ export function StoreProvider({ children }) {
     ]);
   };
 
+  const deleteReview = (reviewId) => {
+    setReviews((prev) => prev.filter((rev) => rev.id !== Number(reviewId)));
+  };
+
   const addConsultation = (payload) => {
     setConsultations((prev) => [
-      { id: Date.now(), ...payload, created_at: new Date().toLocaleDateString("id-ID") },
+      {
+        id: Date.now(),
+        status: "Baru",
+        ...payload,
+        created_at: new Date().toLocaleDateString("id-ID"),
+      },
       ...prev,
     ]);
+  };
+
+  const updateConsultationStatus = (consultationId, status) => {
+    setConsultations((prev) =>
+      prev.map((c) => (c.id === Number(consultationId) ? { ...c, status } : c))
+    );
   };
 
   const addFeedback = (payload) => {
@@ -104,6 +150,10 @@ export function StoreProvider({ children }) {
       { id: Date.now(), ...payload, created_at: new Date().toLocaleDateString("id-ID") },
       ...prev,
     ]);
+  };
+
+  const deleteFeedback = (feedbackId) => {
+    setFeedbacks((prev) => prev.filter((f) => f.id !== Number(feedbackId)));
   };
 
   const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
@@ -121,9 +171,16 @@ export function StoreProvider({ children }) {
         addToCart,
         updateCartQty,
         createOrder,
+        addProduct,
+        updateProduct,
+        deleteProduct,
+        updateOrderStatus,
         addReview,
+        deleteReview,
         addConsultation,
+        updateConsultationStatus,
         addFeedback,
+        deleteFeedback,
       }}
     >
       {children}

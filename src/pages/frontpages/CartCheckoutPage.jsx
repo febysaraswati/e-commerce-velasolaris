@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Trash2 } from "lucide-react";
-import { useStore } from "../context/StoreContext";
-import { formatRupiah } from "../data/velasolarisData";
+import { useStore } from "../../context/StoreContext";
+import { formatRupiah } from "../../utils/formatters";
 
 export default function CartCheckoutPage() {
   const { cart, updateCartQty, createOrder } = useStore();
@@ -13,7 +13,10 @@ export default function CartCheckoutPage() {
   const [address, setAddress] = useState("");
   const [notes, setNotes] = useState("");
 
-  const totalPrice = cart.reduce((sum, item) => sum + item.product.price * item.qty, 0);
+  const totalPrice = cart.reduce(
+    (sum, item) => sum + item.product.price * item.qty,
+    0,
+  );
 
   const handleCheckout = (e) => {
     e.preventDefault();
@@ -25,7 +28,9 @@ export default function CartCheckoutPage() {
   if (cart.length === 0) {
     return (
       <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center">
-        <h1 className="text-xl font-bold text-slate-900">Keranjang Masih Kosong</h1>
+        <h1 className="text-xl font-bold text-slate-900">
+          Keranjang Masih Kosong
+        </h1>
         <p className="mt-2 text-sm text-slate-600">
           Pilih salah satu paket PLTS VelaSolaris untuk memulai pesanan.
         </p>
@@ -42,16 +47,24 @@ export default function CartCheckoutPage() {
   return (
     <div className="grid gap-8 lg:grid-cols-3">
       <div className="space-y-4 lg:col-span-2">
-        <h1 className="text-2xl font-bold text-slate-900">Keranjang Paket PLTS</h1>
+        <h1 className="text-2xl font-bold text-slate-900">
+          Keranjang Paket PLTS
+        </h1>
         {cart.map(({ product, qty }) => (
           <div
             key={product.id}
             className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white p-4"
           >
             <div>
-              <span className="text-xs font-semibold text-amber-700">{product.capacity_wp} Wp</span>
-              <h2 className="text-base font-bold text-slate-900">{product.name}</h2>
-              <p className="text-sm text-slate-600">{formatRupiah(product.price)} / unit</p>
+              <span className="text-xs font-semibold text-amber-700">
+                {product.capacity_wp} Wp
+              </span>
+              <h2 className="text-base font-bold text-slate-900">
+                {product.name}
+              </h2>
+              <p className="text-sm text-slate-600">
+                {formatRupiah(product.price)} / unit
+              </p>
             </div>
 
             <div className="flex items-center gap-3">
@@ -60,7 +73,9 @@ export default function CartCheckoutPage() {
                 min={1}
                 max={product.stock}
                 value={qty}
-                onChange={(e) => updateCartQty(product.id, Number(e.target.value))}
+                onChange={(e) =>
+                  updateCartQty(product.id, Number(e.target.value))
+                }
                 className="w-16 rounded-lg border border-slate-300 px-2.5 py-1.5 text-sm"
               />
               <button
@@ -79,10 +94,14 @@ export default function CartCheckoutPage() {
         onSubmit={handleCheckout}
         className="h-fit space-y-4 rounded-2xl border border-slate-200 bg-white p-6"
       >
-        <h2 className="text-lg font-bold text-slate-900">Ringkasan & Checkout</h2>
+        <h2 className="text-lg font-bold text-slate-900">
+          Ringkasan & Checkout
+        </h2>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-700">Nama Lengkap</label>
+          <label className="block text-xs font-semibold text-slate-700">
+            Nama Lengkap
+          </label>
           <input
             type="text"
             required
@@ -93,7 +112,9 @@ export default function CartCheckoutPage() {
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-700">No. WhatsApp / Telepon</label>
+          <label className="block text-xs font-semibold text-slate-700">
+            No. WhatsApp / Telepon
+          </label>
           <input
             type="text"
             required
@@ -104,7 +125,9 @@ export default function CartCheckoutPage() {
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-700">Alamat Lokasi Pemasangan</label>
+          <label className="block text-xs font-semibold text-slate-700">
+            Alamat Lokasi Pemasangan
+          </label>
           <textarea
             rows={2}
             required
@@ -115,7 +138,9 @@ export default function CartCheckoutPage() {
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-700">Catatan Daya / Atap (Opsional)</label>
+          <label className="block text-xs font-semibold text-slate-700">
+            Catatan Daya / Atap (Opsional)
+          </label>
           <input
             type="text"
             value={notes}
@@ -126,8 +151,12 @@ export default function CartCheckoutPage() {
         </div>
 
         <div className="flex items-center justify-between border-t border-slate-200 pt-4">
-          <span className="text-sm font-semibold text-slate-700">Total Estimasi</span>
-          <span className="text-lg font-bold text-slate-900">{formatRupiah(totalPrice)}</span>
+          <span className="text-sm font-semibold text-slate-700">
+            Total Estimasi
+          </span>
+          <span className="text-lg font-bold text-slate-900">
+            {formatRupiah(totalPrice)}
+          </span>
         </div>
 
         <button

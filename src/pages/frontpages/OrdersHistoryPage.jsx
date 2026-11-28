@@ -1,5 +1,5 @@
-import { useStore } from "../context/StoreContext";
-import { formatRupiah } from "../data/velasolarisData";
+import { useStore } from "../../context/StoreContext";
+import { formatRupiah } from "../../utils/formatters";
 
 export default function OrdersHistoryPage() {
   const { orders, consultations, feedbacks } = useStore();
@@ -14,11 +14,18 @@ export default function OrdersHistoryPage() {
           </div>
         ) : (
           orders.map((order) => (
-            <div key={order.id} className="rounded-xl border border-slate-200 bg-white p-5 space-y-3">
+            <div
+              key={order.id}
+              className="rounded-xl border border-slate-200 bg-white p-5 space-y-3"
+            >
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                 <div>
-                  <span className="text-sm font-bold text-slate-900">Order #{order.id}</span>
-                  <span className="ml-2 text-xs text-slate-500">• {order.created_at}</span>
+                  <span className="text-sm font-bold text-slate-900">
+                    Order #{order.id}
+                  </span>
+                  <span className="ml-2 text-xs text-slate-500">
+                    • {order.created_at}
+                  </span>
                 </div>
                 <span className="rounded-md bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-800">
                   {order.status}
@@ -26,8 +33,11 @@ export default function OrdersHistoryPage() {
               </div>
 
               <p className="text-xs text-slate-600">
-                Pemesan: <strong className="text-slate-800">{order.customer_name}</strong> ({order.phone}) —{" "}
-                {order.address}
+                Pemesan:{" "}
+                <strong className="text-slate-800">
+                  {order.customer_name}
+                </strong>{" "}
+                ({order.phone}) — {order.address}
               </p>
 
               <ul className="divide-y divide-slate-100 text-sm">
@@ -36,7 +46,9 @@ export default function OrdersHistoryPage() {
                     <span>
                       {item.name} ({item.capacity_wp} Wp) × {item.qty}
                     </span>
-                    <span className="font-medium">{formatRupiah(item.price * item.qty)}</span>
+                    <span className="font-medium">
+                      {formatRupiah(item.price * item.qty)}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -51,7 +63,9 @@ export default function OrdersHistoryPage() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="rounded-2xl border border-slate-200 bg-white p-6 space-y-3">
-          <h2 className="text-lg font-bold text-slate-900">Konsultasi Terkirim ({consultations.length})</h2>
+          <h2 className="text-lg font-bold text-slate-900">
+            Konsultasi Terkirim ({consultations.length})
+          </h2>
           {consultations.length === 0 ? (
             <p className="text-sm text-slate-500">Belum ada konsultasi.</p>
           ) : (
@@ -63,7 +77,9 @@ export default function OrdersHistoryPage() {
                 </div>
                 <p className="text-xs text-slate-500">{c.contact}</p>
                 {c.monthly_bill && (
-                  <p className="mt-1 text-xs font-medium text-amber-700">Kebutuhan: {c.monthly_bill}</p>
+                  <p className="mt-1 text-xs font-medium text-amber-700">
+                    Kebutuhan: {c.monthly_bill}
+                  </p>
                 )}
                 <p className="mt-1.5 text-slate-700">{c.message}</p>
               </div>
@@ -72,7 +88,9 @@ export default function OrdersHistoryPage() {
         </section>
 
         <section className="rounded-2xl border border-slate-200 bg-white p-6 space-y-3">
-          <h2 className="text-lg font-bold text-slate-900">Feedback Terkirim ({feedbacks.length})</h2>
+          <h2 className="text-lg font-bold text-slate-900">
+            Feedback Terkirim ({feedbacks.length})
+          </h2>
           {feedbacks.length === 0 ? (
             <p className="text-sm text-slate-500">Belum ada feedback.</p>
           ) : (

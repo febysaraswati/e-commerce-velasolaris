@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useStore } from "../context/StoreContext";
+import { useStore } from "../../context/StoreContext";
 
 export default function ConsultationPage() {
   const { addConsultation, addFeedback } = useStore();
@@ -37,14 +37,19 @@ export default function ConsultationPage() {
   return (
     <div className="grid gap-8 lg:grid-cols-2">
       <div className="rounded-2xl border border-slate-200 bg-white p-6">
-        <h1 className="text-xl font-bold text-slate-900">Konsultasi Sistem PLTS</h1>
+        <h1 className="text-xl font-bold text-slate-900">
+          Konsultasi Sistem PLTS
+        </h1>
         <p className="mt-1 text-sm text-slate-600">
-          Sampaikan kebutuhan beban listrik atau kondisi lokasi untuk dicocokkan dengan paket 2600–7800 Wp.
+          Sampaikan kebutuhan beban listrik atau kondisi lokasi untuk dicocokkan
+          dengan paket 2600–7800 Wp.
         </p>
 
         <form onSubmit={handleConsultSubmit} className="mt-5 space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-700">Nama</label>
+            <label className="block text-xs font-semibold text-slate-700">
+              Nama
+            </label>
             <input
               type="text"
               required
@@ -54,7 +59,9 @@ export default function ConsultationPage() {
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700">Kontak (WA / Email)</label>
+            <label className="block text-xs font-semibold text-slate-700">
+              Kontak (WA / Email)
+            </label>
             <input
               type="text"
               required
@@ -64,7 +71,9 @@ export default function ConsultationPage() {
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700">Perkiraan Tagihan / Kebutuhan Daya</label>
+            <label className="block text-xs font-semibold text-slate-700">
+              Perkiraan Tagihan / Kebutuhan Daya
+            </label>
             <input
               type="text"
               value={monthlyBill}
@@ -74,7 +83,9 @@ export default function ConsultationPage() {
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700">Detail Kebutuhan</label>
+            <label className="block text-xs font-semibold text-slate-700">
+              Detail Kebutuhan
+            </label>
             <textarea
               rows={3}
               required
@@ -90,7 +101,9 @@ export default function ConsultationPage() {
             Kirim Konsultasi
           </button>
           {consultSaved && (
-            <p className="text-xs font-medium text-emerald-700">Permintaan konsultasi tercatat di Riwayat.</p>
+            <p className="text-xs font-medium text-emerald-700">
+              Permintaan konsultasi tercatat di Riwayat.
+            </p>
           )}
         </form>
       </div>
@@ -98,12 +111,15 @@ export default function ConsultationPage() {
       <div className="rounded-2xl border border-slate-200 bg-white p-6">
         <h2 className="text-xl font-bold text-slate-900">Kirim Feedback</h2>
         <p className="mt-1 text-sm text-slate-600">
-          Ada saran atau masukan soal katalog dan layanan VelaSolaris? Tulis di sini.
+          Ada saran atau masukan soal katalog dan layanan VelaSolaris? Tulis di
+          sini.
         </p>
 
         <form onSubmit={handleFeedbackSubmit} className="mt-5 space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-700">Nama</label>
+            <label className="block text-xs font-semibold text-slate-700">
+              Nama
+            </label>
             <input
               type="text"
               required
@@ -113,7 +129,9 @@ export default function ConsultationPage() {
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700">Pesan Feedback</label>
+            <label className="block text-xs font-semibold text-slate-700">
+              Pesan Feedback
+            </label>
             <textarea
               rows={4}
               required
@@ -128,7 +146,11 @@ export default function ConsultationPage() {
           >
             Kirim Feedback
           </button>
-          {fbSaved && <p className="text-xs font-medium text-emerald-700">Feedback berhasil dikirim!</p>}
+          {fbSaved && (
+            <p className="text-xs font-medium text-emerald-700">
+              Feedback berhasil dikirim!
+            </p>
+          )}
         </form>
       </div>
     </div>

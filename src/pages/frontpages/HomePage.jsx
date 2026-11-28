@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Zap, ShieldCheck, ArrowRight } from "lucide-react";
-import { useStore } from "../context/StoreContext";
-import { CATEGORIES, formatRupiah } from "../data/velasolarisData";
+import { useStore } from "../../context/StoreContext";
+import { CATEGORIES } from "../../data/velasolarisData";
+import { formatRupiah } from "../../utils/formatters";
 
 export default function HomePage() {
   const { products, addToCart } = useStore();
@@ -23,7 +24,8 @@ export default function HomePage() {
           Paket PLTS Off-Grid & Hybrid dari 2600 Wp hingga 7800 Wp
         </h1>
         <p className="mt-3 max-w-2xl text-sm text-slate-300 sm:text-base">
-          Pilih kapasitas sistem tenaga surya sesuai kebutuhan daya rumah, villa, atau area operasional Anda tanpa ribet.
+          Pilih kapasitas sistem tenaga surya sesuai kebutuhan daya rumah,
+          villa, atau area operasional Anda tanpa ribet.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
@@ -65,10 +67,14 @@ export default function HomePage() {
                 <span className="rounded-md bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-800">
                   {pkg.capacity_wp} Wp • {pkg.system_type}
                 </span>
-                <span className="text-xs text-slate-500">Stok: {pkg.stock}</span>
+                <span className="text-xs text-slate-500">
+                  Stok: {pkg.stock}
+                </span>
               </div>
 
-              <h3 className="mt-3 text-lg font-bold text-slate-900">{pkg.name}</h3>
+              <h3 className="mt-3 text-lg font-bold text-slate-900">
+                {pkg.name}
+              </h3>
               <p className="mt-1.5 text-sm text-slate-600">{pkg.summary}</p>
 
               <ul className="mt-4 space-y-1.5 border-t border-slate-100 pt-3 text-xs text-slate-700">
@@ -84,7 +90,9 @@ export default function HomePage() {
             </div>
 
             <div className="mt-5 border-t border-slate-100 pt-4">
-              <p className="text-lg font-bold text-slate-900">{formatRupiah(pkg.price)}</p>
+              <p className="text-lg font-bold text-slate-900">
+                {formatRupiah(pkg.price)}
+              </p>
               <div className="mt-3 flex gap-2">
                 <button
                   onClick={() => addToCart(pkg, 1)}

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Star, ShoppingCart } from "lucide-react";
-import { useStore } from "../context/StoreContext";
-import { formatRupiah } from "../data/velasolarisData";
+import { useStore } from "../../context/StoreContext";
+import { formatRupiah } from "../../utils/formatters";
 
 export default function PackageDetailPage() {
   const { id } = useParams();
@@ -20,8 +20,13 @@ export default function PackageDetailPage() {
   if (!pkg) {
     return (
       <div className="rounded-xl border border-slate-200 bg-white p-8 text-center">
-        <p className="font-semibold text-slate-800">Paket PLTS tidak ditemukan.</p>
-        <Link to="/" className="mt-4 inline-block text-sm font-semibold text-amber-600 hover:underline">
+        <p className="font-semibold text-slate-800">
+          Paket PLTS tidak ditemukan.
+        </p>
+        <Link
+          to="/"
+          className="mt-4 inline-block text-sm font-semibold text-amber-600 hover:underline"
+        >
           Kembali ke Katalog
         </Link>
       </div>
@@ -41,7 +46,10 @@ export default function PackageDetailPage() {
 
   return (
     <div className="space-y-8">
-      <Link to="/" className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-900">
+      <Link
+        to="/"
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-900"
+      >
         <ArrowLeft className="h-4 w-4" /> Kembali ke Katalog
       </Link>
 
@@ -56,10 +64,18 @@ export default function PackageDetailPage() {
             </span>
           </div>
 
-          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">{pkg.name}</h1>
-          <p className="text-sm leading-relaxed text-slate-600">{pkg.summary}</p>
-          <p className="text-2xl font-bold text-slate-900">{formatRupiah(pkg.price)}</p>
-          <p className="text-xs text-slate-500">Stok tersedia: {pkg.stock} unit</p>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+            {pkg.name}
+          </h1>
+          <p className="text-sm leading-relaxed text-slate-600">
+            {pkg.summary}
+          </p>
+          <p className="text-2xl font-bold text-slate-900">
+            {formatRupiah(pkg.price)}
+          </p>
+          <p className="text-xs text-slate-500">
+            Stok tersedia: {pkg.stock} unit
+          </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             <input
@@ -67,7 +83,11 @@ export default function PackageDetailPage() {
               min={1}
               max={pkg.stock}
               value={qty}
-              onChange={(e) => setQty(Math.max(1, Math.min(pkg.stock, Number(e.target.value) || 1)))}
+              onChange={(e) =>
+                setQty(
+                  Math.max(1, Math.min(pkg.stock, Number(e.target.value) || 1)),
+                )
+              }
               className="w-20 rounded-lg border border-slate-300 px-3 py-2 text-sm"
             />
             <button
@@ -80,23 +100,33 @@ export default function PackageDetailPage() {
         </div>
 
         <div className="rounded-xl bg-slate-50 p-5">
-          <h2 className="text-base font-bold text-slate-900">Spesifikasi Teknis Paket</h2>
+          <h2 className="text-base font-bold text-slate-900">
+            Spesifikasi Teknis Paket
+          </h2>
           <dl className="mt-4 divide-y divide-slate-200 text-sm">
             <div className="flex justify-between py-2.5 gap-4">
               <dt className="text-slate-500">Panel Surya</dt>
-              <dd className="text-right font-medium text-slate-900">{pkg.specs.panels}</dd>
+              <dd className="text-right font-medium text-slate-900">
+                {pkg.specs.panels}
+              </dd>
             </div>
             <div className="flex justify-between py-2.5 gap-4">
               <dt className="text-slate-500">Inverter</dt>
-              <dd className="text-right font-medium text-slate-900">{pkg.specs.inverter}</dd>
+              <dd className="text-right font-medium text-slate-900">
+                {pkg.specs.inverter}
+              </dd>
             </div>
             <div className="flex justify-between py-2.5 gap-4">
               <dt className="text-slate-500">Penyimpanan Baterai</dt>
-              <dd className="text-right font-medium text-slate-900">{pkg.specs.battery}</dd>
+              <dd className="text-right font-medium text-slate-900">
+                {pkg.specs.battery}
+              </dd>
             </div>
             <div className="flex justify-between py-2.5 gap-4">
               <dt className="text-slate-500">Estimasi Produksi</dt>
-              <dd className="text-right font-medium text-emerald-700">{pkg.specs.daily_est}</dd>
+              <dd className="text-right font-medium text-emerald-700">
+                {pkg.specs.daily_est}
+              </dd>
             </div>
           </dl>
         </div>
@@ -105,10 +135,14 @@ export default function PackageDetailPage() {
       {/* Bagian Ulasan / Reviews */}
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border border-slate-200 bg-white p-6">
-          <h2 className="text-lg font-bold text-slate-900">Tulis Ulasan Paket</h2>
+          <h2 className="text-lg font-bold text-slate-900">
+            Tulis Ulasan Paket
+          </h2>
           <form onSubmit={handleReviewSubmit} className="mt-4 space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700">Nama</label>
+              <label className="block text-xs font-semibold text-slate-700">
+                Nama
+              </label>
               <input
                 type="text"
                 required
@@ -119,7 +153,9 @@ export default function PackageDetailPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-700">Rating (1–5)</label>
+              <label className="block text-xs font-semibold text-slate-700">
+                Rating (1–5)
+              </label>
               <select
                 value={rating}
                 onChange={(e) => setRating(Number(e.target.value))}
@@ -133,7 +169,9 @@ export default function PackageDetailPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-700">Komentar</label>
+              <label className="block text-xs font-semibold text-slate-700">
+                Komentar
+              </label>
               <textarea
                 rows={3}
                 required
@@ -149,26 +187,42 @@ export default function PackageDetailPage() {
             >
               Kirim Ulasan
             </button>
-            {submitted && <p className="text-xs font-medium text-emerald-700">Ulasan tersimpan!</p>}
+            {submitted && (
+              <p className="text-xs font-medium text-emerald-700">
+                Ulasan tersimpan!
+              </p>
+            )}
           </form>
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-white p-6">
-          <h2 className="text-lg font-bold text-slate-900">Ulasan Pelanggan ({pkgReviews.length})</h2>
+          <h2 className="text-lg font-bold text-slate-900">
+            Ulasan Pelanggan ({pkgReviews.length})
+          </h2>
           <div className="mt-4 space-y-3">
             {pkgReviews.length === 0 ? (
-              <p className="text-sm text-slate-500">Belum ada ulasan untuk paket ini.</p>
+              <p className="text-sm text-slate-500">
+                Belum ada ulasan untuk paket ini.
+              </p>
             ) : (
               pkgReviews.map((rev) => (
-                <div key={rev.id} className="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                <div
+                  key={rev.id}
+                  className="rounded-xl border border-slate-100 bg-slate-50 p-4"
+                >
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-bold text-slate-900">{rev.author}</span>
+                    <span className="text-sm font-bold text-slate-900">
+                      {rev.author}
+                    </span>
                     <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-600">
-                      <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" /> {rev.rating}/5
+                      <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />{" "}
+                      {rev.rating}/5
                     </span>
                   </div>
                   <p className="mt-1.5 text-sm text-slate-700">{rev.comment}</p>
-                  <p className="mt-1 text-[11px] text-slate-400">{rev.created_at}</p>
+                  <p className="mt-1 text-[11px] text-slate-400">
+                    {rev.created_at}
+                  </p>
                 </div>
               ))
             )}
