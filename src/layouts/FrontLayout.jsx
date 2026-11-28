@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
-import { Sun, ShoppingCart, Phone, Mail, MapPin } from "lucide-react";
+import { Sun, ShoppingCart, Phone, Mail, MapPin, LogOut, UserCheck } from "lucide-react";
 import { useStore } from "../context/StoreContext";
+import AuthModal from "../components/AuthModal";
 
 export default function FrontLayout() {
-  const { cartCount } = useStore();
+  const { cartCount, currentUser, logoutUser } = useStore();
+  const [authModalMode, setAuthModalMode] = useState(null); // null | "login" | "register"
 
   const navLinkClass = ({ isActive }) =>
     `text-sm font-medium transition ${
@@ -26,7 +29,7 @@ export default function FrontLayout() {
             </div>
           </Link>
 
-          <nav className="flex flex-wrap items-center gap-5 text-sm font-medium text-slate-700">
+          <nav className="flex flex-wrap items-center gap-4 text-sm font-medium text-slate-700">
             <NavLink to="/" end className={navLinkClass}>
               Katalog
             </NavLink>
@@ -36,9 +39,7 @@ export default function FrontLayout() {
             <NavLink to="/orders" className={navLinkClass}>
               Riwayat
             </NavLink>
-            <Link to="/admin" className="text-slate-500 hover:text-amber-600">
-              Admin
-            </Link>
+           
             <Link
               to="/cart"
               className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-3.5 py-2 text-white transition hover:bg-slate-800"
@@ -46,6 +47,41 @@ export default function FrontLayout() {
               <ShoppingCart className="h-4 w-4" />
               <span>Keranjang ({cartCount})</span>
             </Link>
+
+            {currentUser ? (
+              <div className="flex items-center gap-2 border-l border-slate-200 pl-3">
+                <span className="inline-flex items-center gap-1.5 rounded-lg bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-800 border border-amber-200">
+                  <UserCheck className="h-3.5 w-3.5 text-amber-600" />
+                  <span>{currentUser.name}</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={logoutUser}
+                  className="inline-flex items-center gap-1 rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+                  title="Keluar"
+                >
+                  <LogOut className="h-3.5 w-3.5" />
+                  <span>Keluar</span>
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 border-l border-slate-200 pl-3">
+                <button
+                  type="button"
+                  onClick={() => setAuthModalMode("login")}
+                  className="rounded-lg border border-amber-400 px-3.5 py-1.5 text-sm font-semibold text-amber-700 transition hover:bg-amber-50"
+                >
+                  Masuk
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAuthModalMode("register")}
+                  className="rounded-lg bg-amber-400 px-3.5 py-1.5 text-sm font-semibold text-white transition hover:bg-amber-700"
+                >
+                  Daftar
+                </button>
+              </div>
+            )}
           </nav>
         </div>
       </header>
@@ -123,6 +159,13 @@ export default function FrontLayout() {
           rights reserved.
         </div>
       </footer>
+
+      {authModalMode && (
+        <AuthModal
+          initialMode={authModalMode}
+          onClose={() => setAuthModalMode(null)}
+        />
+      )}
     </div>
   );
 }

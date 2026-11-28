@@ -38,9 +38,6 @@ export default function Navbar() {
           <NavLink to="/orders" className={navLinkClass}>
             Riwayat
           </NavLink>
-          <NavLink to="/admin" className={navLinkClass}>
-            Admin
-          </NavLink>
           <Link
             to="/cart"
             className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-3.5 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"

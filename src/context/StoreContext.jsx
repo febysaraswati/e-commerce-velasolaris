@@ -12,13 +12,50 @@ const loadStorage = (key, fallback) => {
   }
 };
 
+const syncProductsWithInitial = (savedProducts, initialProducts) => {
+  if (!Array.isArray(savedProducts) || savedProducts.length === 0) {
+    return initialProducts;
+  }
+
+  const initialMap = new Map(initialProducts.map((item) => [item.id, item]));
+  const merged = savedProducts.map((savedItem) => {
+    const initialItem = initialMap.get(savedItem.id);
+    if (!initialItem) return savedItem;
+
+    const stockDiff =
+      typeof initialItem.stock === "number" && typeof savedItem.stock === "number"
+        ? Math.min(savedItem.stock, initialItem.stock)
+        : savedItem.stock;
+
+    return {
+      ...savedItem,
+      ...initialItem,
+      price: initialItem.price,
+      stock: stockDiff,
+    };
+  });
+
+  initialProducts.forEach((initialItem) => {
+    if (!merged.some((item) => item.id === initialItem.id)) {
+      merged.push(initialItem);
+    }
+  });
+
+  return merged;
+};
+
 export function StoreProvider({ children }) {
-  const [products, setProducts] = useState(() => loadStorage("vs_products", INITIAL_PRODUCTS));
+  const [products, setProducts] = useState(() => {
+    const saved = loadStorage("vs_products", INITIAL_PRODUCTS);
+    return syncProductsWithInitial(saved, INITIAL_PRODUCTS);
+  });
   const [cart, setCart] = useState(() => loadStorage("vs_cart", []));
   const [reviews, setReviews] = useState(() => loadStorage("vs_reviews", INITIAL_REVIEWS));
   const [orders, setOrders] = useState(() => loadStorage("vs_orders", []));
   const [consultations, setConsultations] = useState(() => loadStorage("vs_consultations", []));
   const [feedbacks, setFeedbacks] = useState(() => loadStorage("vs_feedbacks", []));
+  const [users, setUsers] = useState(() => loadStorage("vs_users", []));
+  const [currentUser, setCurrentUser] = useState(() => loadStorage("vs_auth_user", null));
 
   useEffect(() => localStorage.setItem("vs_products", JSON.stringify(products)), [products]);
   useEffect(() => localStorage.setItem("vs_cart", JSON.stringify(cart)), [cart]);
@@ -26,6 +63,62 @@ export function StoreProvider({ children }) {
   useEffect(() => localStorage.setItem("vs_orders", JSON.stringify(orders)), [orders]);
   useEffect(() => localStorage.setItem("vs_consultations", JSON.stringify(consultations)), [consultations]);
   useEffect(() => localStorage.setItem("vs_feedbacks", JSON.stringify(feedbacks)), [feedbacks]);
+  useEffect(() => localStorage.setItem("vs_users", JSON.stringify(users)), [users]);
+  useEffect(() => localStorage.setItem("vs_auth_user", JSON.stringify(currentUser)), [currentUser]);
+
+  const registerUser = ({ name, email, password, phone }) => {
+    const cleanEmail = email.trim().toLowerCase();
+    const exists = users.some((u) => u.email === cleanEmail);
+    if (exists) {
+      return { ok: false, message: "Email sudah terdaftar. Silakan masuk." };
+    }
+
+    const newUser = {
+      id: Date.now(),
+      name: name.trim(),
+      email: cleanEmail,
+      password,
+      phone: phone?.trim() || "",
+      role: "customer",
+      created_at: new Date().toLocaleDateString("id-ID"),
+    };
+
+    setUsers((prev) => [newUser, ...prev]);
+    setCurrentUser({
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      phone: newUser.phone,
+      role: newUser.role,
+    });
+
+    return { ok: true, message: "Akun berhasil dibuat." };
+  };
+
+  const loginUser = ({ email, password }) => {
+    const cleanEmail = email.trim().toLowerCase();
+    const found = users.find(
+      (u) => u.email === cleanEmail && u.password === password
+    );
+
+    if (!found) {
+      return { ok: false, message: "Email atau password belum sesuai." };
+    }
+
+    const sessionUser = {
+      id: found.id,
+      name: found.name,
+      email: found.email,
+      phone: found.phone,
+      role: found.role,
+    };
+    setCurrentUser(sessionUser);
+    return { ok: true, message: `Selamat datang kembali, ${found.name}!` };
+  };
+
+  const logoutUser = () => {
+    setCurrentUser(null);
+  };
 
   const addToCart = (product, qty = 1) => {
     setCart((prev) => {
@@ -156,6 +249,21 @@ export function StoreProvider({ children }) {
     setFeedbacks((prev) => prev.filter((f) => f.id !== Number(feedbackId)));
   };
 
+  const resetStoreData = () => {
+    localStorage.removeItem("vs_products");
+    localStorage.removeItem("vs_cart");
+    localStorage.removeItem("vs_reviews");
+    localStorage.removeItem("vs_orders");
+    localStorage.removeItem("vs_consultations");
+    localStorage.removeItem("vs_feedbacks");
+    setProducts(INITIAL_PRODUCTS);
+    setCart([]);
+    setReviews(INITIAL_REVIEWS);
+    setOrders([]);
+    setConsultations([]);
+    setFeedbacks([]);
+  };
+
   const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
 
   return (
@@ -168,6 +276,8 @@ export function StoreProvider({ children }) {
         orders,
         consultations,
         feedbacks,
+        users,
+        currentUser,
         addToCart,
         updateCartQty,
         createOrder,
@@ -181,6 +291,10 @@ export function StoreProvider({ children }) {
         updateConsultationStatus,
         addFeedback,
         deleteFeedback,
+        registerUser,
+        loginUser,
+        logoutUser,
+        resetStoreData,
       }}
     >
       {children}
