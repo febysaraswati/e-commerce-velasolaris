@@ -113,4 +113,15 @@ export const INITIAL_REVIEWS = [
     comment: "Instalasi rapi dan backup baterai cukup buat malam hari di villa.",
     created_at: "2026-11-02",
   },
+<<<<<<< HEAD
 ];
+=======
+];
+
+export const formatRupiah = (amount) =>
+  new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0,
+  }).format(amount);
+>>>>>>> 82cb463dda3116c662e9e9f125a0d225d919b2b0

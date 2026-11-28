@@ -13,14 +13,21 @@ const loadStorage = (key, fallback) => {
 };
 
 export function StoreProvider({ children }) {
+<<<<<<< HEAD
   const [products, setProducts] = useState(() => loadStorage("vs_products", INITIAL_PRODUCTS));
+=======
+  const [products] = useState(INITIAL_PRODUCTS);
+>>>>>>> 82cb463dda3116c662e9e9f125a0d225d919b2b0
   const [cart, setCart] = useState(() => loadStorage("vs_cart", []));
   const [reviews, setReviews] = useState(() => loadStorage("vs_reviews", INITIAL_REVIEWS));
   const [orders, setOrders] = useState(() => loadStorage("vs_orders", []));
   const [consultations, setConsultations] = useState(() => loadStorage("vs_consultations", []));
   const [feedbacks, setFeedbacks] = useState(() => loadStorage("vs_feedbacks", []));
 
+<<<<<<< HEAD
   useEffect(() => localStorage.setItem("vs_products", JSON.stringify(products)), [products]);
+=======
+>>>>>>> 82cb463dda3116c662e9e9f125a0d225d919b2b0
   useEffect(() => localStorage.setItem("vs_cart", JSON.stringify(cart)), [cart]);
   useEffect(() => localStorage.setItem("vs_reviews", JSON.stringify(reviews)), [reviews]);
   useEffect(() => localStorage.setItem("vs_orders", JSON.stringify(orders)), [orders]);
@@ -75,16 +82,20 @@ export function StoreProvider({ children }) {
       created_at: new Date().toLocaleDateString("id-ID"),
     };
     setOrders((prev) => [newOrder, ...prev]);
+<<<<<<< HEAD
     setProducts((prev) =>
       prev.map((p) => {
         const ordered = cart.find((item) => item.product.id === p.id);
         return ordered ? { ...p, stock: Math.max(0, p.stock - ordered.qty) } : p;
       })
     );
+=======
+>>>>>>> 82cb463dda3116c662e9e9f125a0d225d919b2b0
     setCart([]);
     return newOrder;
   };
 
+<<<<<<< HEAD
   const addProduct = (payload) => {
     const newProduct = {
       ...payload,
@@ -109,6 +120,8 @@ export function StoreProvider({ children }) {
     );
   };
 
+=======
+>>>>>>> 82cb463dda3116c662e9e9f125a0d225d919b2b0
   const addReview = ({ productId, author, rating, comment }) => {
     setReviews((prev) => [
       {
@@ -123,6 +136,7 @@ export function StoreProvider({ children }) {
     ]);
   };
 
+<<<<<<< HEAD
   const deleteReview = (reviewId) => {
     setReviews((prev) => prev.filter((rev) => rev.id !== Number(reviewId)));
   };
@@ -135,16 +149,24 @@ export function StoreProvider({ children }) {
         ...payload,
         created_at: new Date().toLocaleDateString("id-ID"),
       },
+=======
+  const addConsultation = (payload) => {
+    setConsultations((prev) => [
+      { id: Date.now(), ...payload, created_at: new Date().toLocaleDateString("id-ID") },
+>>>>>>> 82cb463dda3116c662e9e9f125a0d225d919b2b0
       ...prev,
     ]);
   };
 
+<<<<<<< HEAD
   const updateConsultationStatus = (consultationId, status) => {
     setConsultations((prev) =>
       prev.map((c) => (c.id === Number(consultationId) ? { ...c, status } : c))
     );
   };
 
+=======
+>>>>>>> 82cb463dda3116c662e9e9f125a0d225d919b2b0
   const addFeedback = (payload) => {
     setFeedbacks((prev) => [
       { id: Date.now(), ...payload, created_at: new Date().toLocaleDateString("id-ID") },
@@ -152,10 +174,13 @@ export function StoreProvider({ children }) {
     ]);
   };
 
+<<<<<<< HEAD
   const deleteFeedback = (feedbackId) => {
     setFeedbacks((prev) => prev.filter((f) => f.id !== Number(feedbackId)));
   };
 
+=======
+>>>>>>> 82cb463dda3116c662e9e9f125a0d225d919b2b0
   const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
 
   return (
@@ -171,6 +196,7 @@ export function StoreProvider({ children }) {
         addToCart,
         updateCartQty,
         createOrder,
+<<<<<<< HEAD
         addProduct,
         updateProduct,
         deleteProduct,
@@ -181,6 +207,11 @@ export function StoreProvider({ children }) {
         updateConsultationStatus,
         addFeedback,
         deleteFeedback,
+=======
+        addReview,
+        addConsultation,
+        addFeedback,
+>>>>>>> 82cb463dda3116c662e9e9f125a0d225d919b2b0
       }}
     >
       {children}
